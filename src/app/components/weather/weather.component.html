@@ -1,0 +1,71 @@
+<div class="preloader-container" *ngIf="isLoading">
+  <app-weather-preloader class="preloader"></app-weather-preloader>
+</div>
+<div class="container-fluid">
+  <div class="input card row">
+    <div class="col-6 m-auto">
+      <label for="address" class="form-label"
+        >address<span class="text-danger">*</span></label
+      >
+      <input
+        type="text"
+        class="form-control"
+        name="address"
+        id="address"
+        [(ngModel)]="address"
+      />
+    </div>
+    <div class="text-center mt-4">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        (click)="displayWeather()"
+      >
+        Get Weather
+      </button>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="weatherList">
+    <div [ngClass]="{'col-md-12': i === 0, 'col-md-6': i !== 0}" *ngFor="let weather of weatherList.list; let i = index;">
+      <div  class="weather-info">
+        <div class="d-flex justify-content-between">
+          <div class="info-date">
+            <h1>{{ weather.dt_txt | dateFormat: 'hh:mm A' }}</h1>
+            <span class="date">{{ weather.dt_txt | dateFormat: 'YYYY-MM-DD' }}</span>
+            <span class="weather-address">{{ addressLastSearch }}</span>
+          </div>
+
+          <div class="info-weather">
+            <div class="weather-wrapper">
+              <span class="weather-temperature"
+                >{{ weather.main.temp - 273.15 | number: "1.0-0" }}°C</span
+              >
+              <div class="weather-type">
+                <img
+                  src="https://openweathermap.org/img/wn/{{
+                    weather.weather[0].icon
+                  }}@2x.png"
+                  width="64px"
+                  height="64px"
+                  alt=""
+                />
+              </div>
+              <br />
+            </div>
+            <span class="weather-description">
+              {{ weather.weather[0].description | titlecase }}
+            </span>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+          <div class="humidity"><img src="" alt=""> Humidity {{ weather.main.humidity }}%</div>
+          <div class="wind">
+            <i class="fas fa-wind"></i>Wind {{ weather.wind.speed }} km/h
+          </div>
+          <div class="pressure">Pressure {{ weather.main.pressure }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
